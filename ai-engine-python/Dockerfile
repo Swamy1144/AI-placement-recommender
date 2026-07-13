@@ -13,4 +13,4 @@ COPY . .
 EXPOSE 10000
 
 # Start the application
-CMD ["python", "app.py"]
+CMD ["python", "main.py"]
