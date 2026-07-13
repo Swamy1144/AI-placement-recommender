@@ -5,6 +5,9 @@ import { Upload, Cpu, CheckCircle, AlertCircle, Loader2, Award, Zap, Target, Loc
 // --- STEP 2: IMPORT LOCAL LOGO FILE FROM THE SRC DIRECTORY ---
 import svuLogoLocal from './svu-logo.png';
 
+// Dynamically handle local vs server API base routes
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+
 function App() {
   // Navigation View Management: 'landing', 'user', 'results', 'admin'
   const [view, setView] = useState('landing');
@@ -46,11 +49,11 @@ function App() {
     formData.append("interest", interest);
 
     try {
-      const response = await axios.post('http://localhost:8080/api/candidates/analyze-resume', formData);
+      const response = await axios.post(`${API_BASE_URL}/api/candidates/analyze-resume`, formData);
       setResult(response.data);
       setView('results'); 
     } catch (error) {
-      alert("Connection Failed: Check if Java and Python are active!");
+      alert("Connection Failed: Check if your server gateways are online!");
     } finally {
       setLoading(false);
     }
@@ -69,7 +72,7 @@ function App() {
 
   const fetchCandidates = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/candidates/all');
+      const response = await axios.get(`${API_BASE_URL}/api/candidates/all`);
       setCandidateList(response.data);
     } catch (error) {
       console.error("Database connection error:", error);
