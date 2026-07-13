@@ -6,7 +6,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# CRITICAL: Download the spaCy language model during the build process
+# Download the spaCy language model during the build process
 RUN python -m spacy download en_core_web_sm
 
 # Copy the rest of your python engine files
