@@ -1,53 +1,54 @@
 package com.career.navigator;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.util.List;
 
-@Service
-public class AIService {
+@RestController
+@RequestMapping("/api/candidates")
+@CrossOrigin(origins = "*")
+public class CandidateController {
 
-    // Automatically reads the live Render URL from application.properties
-    @Value("${ai.engine.url}")
-    private String aiEngineUrl;
+    @Autowired
+    private CandidateRepository repository;
 
-    public String callPython(MultipartFile file, String interest) throws Exception {
-        // 1. Build the exact endpoint URL target
-        String pythonUrl = aiEngineUrl + "/process-resume";
+    @Autowired
+    private AIService aiService;
 
-        RestTemplate restTemplate = new RestTemplate();
+    @PostMapping("/register")
+    public Candidate registerCandidate(@RequestBody Candidate candidate) {
+        return repository.save(candidate);
+    }
 
-        // 2. Set headers for standard Multipart Form Upload
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        // 3. Convert the uploaded file into a format Spring's RestTemplate can transmit
-        ByteArrayResource fileAsResource = new ByteArrayResource(file.getBytes()) {
-            @Override
-            public String getFilename() {
-                return file.getOriginalFilename();
+    @PostMapping(value = "/analyze-resume", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> analyzeResume(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("interest") String interest) {
+        try {
+            if (file.isEmpty()) {
+                return ResponseEntity.badRequest().body("{\"error\": \"File is empty\"}");
             }
-        };
 
-        // 4. Map the payload fields exactly matching what app.py expects ('file' and
-        // 'interest')
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", fileAsResource);
-        body.add("interest", interest);
+            String result = aiService.callPython(file, interest);
+            return ResponseEntity.ok(result);
 
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"error\": \"Java File IO Error: " + e.getMessage() + "\"}");
+        } catch (Exception e) {
+            System.err.println("AI Bridge Error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"error\": \"AI Engine Connection Failed.\"}");
+        }
+    }
 
-        // 5. Fire the request directly over the internet to the Python web service
-        ResponseEntity<String> response = restTemplate.postForEntity(pythonUrl, requestEntity, String.class);
-
-        return response.getBody();
+    @GetMapping("/all")
+    public List<Candidate> getAllCandidates() {
+        return repository.findAll();
     }
 }
