@@ -63,7 +63,7 @@ function App() {
       alert("⚠️ Selection Required: Please provide a Job Role and a Resume.");
       return;
     }
-    setLoading(true);
+    loading(true);
     setResult(null);
     const formData = new FormData();
     formData.append("file", file);
@@ -112,7 +112,7 @@ function App() {
 
   return (
     <div style={styles.page}>
-      {/* --- CONDITIONAL GLOBAL HEADER BAR (Hidden on main landing gate for cleaner look) --- */}
+      {/* --- CONDITIONAL GLOBAL HEADER BAR --- */}
       {view !== "landing" && (
         <nav style={styles.univHeader}>
           <div style={styles.navContainer}>
@@ -120,7 +120,7 @@ function App() {
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "20px",
+                gap: "12px",
                 cursor: "pointer",
               }}
               onClick={() => setView("landing")}
@@ -331,8 +331,7 @@ function App() {
               >
                 <div style={styles.visualizationCard}>
                   <h4 style={styles.cardHeader}>
-                    <Award size={18} color="#60a5fa" /> Overall Compatibility
-                    Index
+                    <Award size={18} color="#60a5fa" /> Overall Compatibility Check
                   </h4>
                   <div style={styles.scoreCircleWrapper}>
                     <div style={styles.scoreInfo}>
@@ -379,15 +378,13 @@ function App() {
               >
                 <div style={styles.visualizationCard}>
                   <h4 style={styles.cardHeader}>
-                    <BarChart3 size={18} color="#34d399" /> Hybrid Weight Factor
-                    Breakdown
+                    <BarChart3 size={18} color="#34d399" /> Hybrid Weight Breakdown
                   </h4>
                   <div style={styles.chartRow}>
                     <div style={styles.chartMeta}>
                       <span>Technical Skill Matching (70% Weight)</span>
                       <strong>
-                        {animatedScore > 15 ? animatedScore - 5 : animatedScore}
-                        %
+                        {animatedScore > 15 ? animatedScore - 5 : animatedScore}%
                       </strong>
                     </div>
                     <div style={styles.barTrack}>
@@ -421,21 +418,17 @@ function App() {
 
                 <div style={styles.visualizationCard}>
                   <h4 style={styles.cardHeader}>
-                    <ShieldCheck size={18} color="#fbbf24" /> Document Structure
-                    Integrity
+                    <ShieldCheck size={18} color="#fbbf24" /> Structural Integrity
                   </h4>
                   <div style={styles.matrixGrid}>
                     <div style={styles.matrixItem}>
                       <CheckCircle size={14} color="#34d399" /> Header Context
-                      Validated
                     </div>
                     <div style={styles.matrixItem}>
-                      <CheckCircle size={14} color="#34d399" /> Core Academic
-                      Mapping
+                      <CheckCircle size={14} color="#34d399" /> Core Academics
                     </div>
                     <div style={styles.matrixItem}>
-                      <CheckCircle size={14} color="#34d399" /> Project
-                      Repositories Indexed
+                      <CheckCircle size={14} color="#34d399" /> Repositories
                     </div>
                     <div
                       style={{
@@ -447,7 +440,7 @@ function App() {
                         size={14}
                         color={animatedScore > 75 ? "#34d399" : "#fbbf24"}
                       />{" "}
-                      Experience Arrays Scaled
+                      Arrays Scaled
                     </div>
                   </div>
                 </div>
@@ -457,8 +450,7 @@ function App() {
             <div style={{ ...styles.skillGrid, marginTop: "20px" }}>
               <div style={styles.skillCard}>
                 <h4 style={styles.cardHeader}>
-                  <CheckCircle size={18} color="#34d399" /> Identified Industry
-                  Proficiencies
+                  <CheckCircle size={18} color="#34d399" /> Identified Proficiencies
                 </h4>
                 <div style={styles.pillContainer}>
                   {result.skills_found?.length > 0 ? (
@@ -477,7 +469,6 @@ function App() {
               <div style={styles.skillCard}>
                 <h4 style={styles.cardHeader}>
                   <AlertCircle size={18} color="#fbbf24" /> Critical Skill Gaps
-                  Detected
                 </h4>
                 <div style={styles.pillContainer}>
                   {result.missing_skills?.length > 0 ? (
@@ -488,7 +479,7 @@ function App() {
                     ))
                   ) : (
                     <span style={{ color: "#34d399" }}>
-                      Profile matches target baseline criteria flawlessly!
+                      Flawless profile baseline match!
                     </span>
                   )}
                 </div>
@@ -503,7 +494,7 @@ function App() {
             {!isAdminLoggedIn ? (
               <div style={styles.glassCardSecure}>
                 <h2 style={styles.adminTitle}>
-                  <Lock size={22} color="#ef4444" /> Placement Cell Control Gate
+                  <Lock size={22} color="#ef4444" /> Placement Control Gate
                 </h2>
                 <form
                   onSubmit={handleAdminLogin}
@@ -543,71 +534,71 @@ function App() {
                       gap: "10px",
                     }}
                   >
-                    <Users size={22} color="#3b82f6" /> Candidate Placement
-                    Database Matrix
+                    <Users size={22} color="#3b82f6" /> Placement Database Matrix
                   </h3>
                   <button onClick={handleAdminLogout} style={styles.logoutBtn}>
-                    <LogOut size={14} /> Close Secure Session
+                    <LogOut size={14} /> Close Session
                   </button>
                 </div>
-                <table style={styles.table}>
-                  <thead>
-                    <tr
-                      style={{
-                        borderBottom: "2px solid #334155",
-                        color: "#94a3b8",
-                      }}
-                    >
-                      <th style={{ padding: "15px" }}>Record ID</th>
-                      <th>Candidate Name</th>
-                      <th>Email Address</th>
-                      <th>Vector Target Profile</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {candidateList.length > 0 ? (
-                      candidateList.map((u) => (
-                        <tr
-                          key={u.id}
-                          style={{ borderBottom: "1px solid #1e293b" }}
-                        >
+                <div style={{ overflowX: "auto" }}>
+                  <table style={styles.table}>
+                    <thead>
+                      <tr
+                        style={{
+                          borderBottom: "2px solid #334155",
+                          color: "#94a3b8",
+                        }}
+                      >
+                        <th style={{ padding: "12px" }}>Record ID</th>
+                        <th>Candidate Name</th>
+                        <th>Email Address</th>
+                        <th>Vector Profile</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {candidateList.length > 0 ? (
+                        candidateList.map((u) => (
+                          <tr
+                            key={u.id}
+                            style={{ borderBottom: "1px solid #1e293b" }}
+                          >
+                            <td
+                              style={{
+                                padding: "12px",
+                                color: "#3b82f6",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              #00{u.id}
+                            </td>
+                            <td style={{ fontWeight: "600", color: "#fff" }}>
+                              {u.name}
+                            </td>
+                            <td style={{ color: "#cbd5e1" }}>{u.email}</td>
+                            <td>
+                              <span style={styles.domainBadge}>
+                                {u.interest || "Unspecified"}
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
                           <td
+                            colSpan="4"
                             style={{
-                              padding: "15px",
-                              color: "#3b82f6",
-                              fontWeight: "bold",
+                              padding: "30px",
+                              textAlign: "center",
+                              color: "#94a3b8",
                             }}
                           >
-                            #00{u.id}
-                          </td>
-                          <td style={{ fontWeight: "600", color: "#fff" }}>
-                            {u.name}
-                          </td>
-                          <td style={{ color: "#cbd5e1" }}>{u.email}</td>
-                          <td>
-                            <span style={styles.domainBadge}>
-                              {u.interest || "Unspecified"}
-                            </span>
+                            No data synchronized from backend repository.
                           </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan="4"
-                          style={{
-                            padding: "30px",
-                            textAlign: "center",
-                            color: "#94a3b8",
-                          }}
-                        >
-                          No candidate files synchronized from Spring Boot
-                          Database.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
           </div>
@@ -622,72 +613,78 @@ const styles = {
   page: {
     background: "radial-gradient(circle at top right, #1e293b, #0f172a)",
     minHeight: "100vh",
-    paddingBottom: "60px",
+    paddingBottom: "40px",
     fontFamily: "'Segoe UI', sans-serif",
     color: "#f8fafc",
+    width: "100%",
+    overflowX: "hidden",
   },
   univHeader: {
     background: "rgba(15, 23, 42, 0.95)",
     borderBottom: "2px solid #3b82f6",
-    padding: "20px 50px",
-    marginBottom: "40px",
+    padding: "15px 20px",
+    marginBottom: "25px",
     backdropFilter: "blur(12px)",
     boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
-    animation: "slideIn 0.3s ease-out",
+    width: "100%",
   },
   navContainer: {
-    maxWidth: "1300px",
+    maxWidth: "1200px",
     margin: "0 auto",
     display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
     justifyContent: "space-between",
     alignItems: "center",
+    gap: "15px",
   },
-  logoMini: { height: "55px", width: "auto" },
+  logoMini: { height: "45px", width: "auto" },
   univTextContainer: { display: "flex", flexDirection: "column" },
   univNameMini: {
     margin: 0,
-    fontSize: "18px",
+    fontSize: "14px",
     fontWeight: "900",
     color: "#ffffff",
-    letterSpacing: "1px",
+    letterSpacing: "0.5px",
   },
   deptNameMini: {
-    margin: "2px 0 0 0",
-    fontSize: "11px",
+    margin: "1px 0 0 0",
+    fontSize: "9px",
     color: "#60a5fa",
     fontWeight: "600",
   },
   linkContainer: {
     display: "flex",
-    gap: "10px",
+    gap: "5px",
     background: "rgba(15,23,42,0.6)",
-    padding: "5px",
-    borderRadius: "12px",
+    padding: "4px",
+    borderRadius: "10px",
     border: "1px solid #1e293b",
+    flexWrap: "wrap",
   },
   navLinkHome: {
     background: "transparent",
     border: "none",
     color: "#94a3b8",
     fontWeight: "700",
-    fontSize: "13px",
-    padding: "8px 14px",
-    borderRadius: "8px",
+    fontSize: "12px",
+    padding: "6px 10px",
+    borderRadius: "6px",
     display: "flex",
     alignItems: "center",
-    gap: "6px",
+    gap: "4px",
     cursor: "pointer",
   },
   navLink: {
     border: "none",
     color: "#cbd5e1",
     fontWeight: "700",
-    fontSize: "13px",
-    padding: "8px 16px",
-    borderRadius: "8px",
+    fontSize: "12px",
+    padding: "6px 12px",
+    borderRadius: "6px",
     display: "flex",
     alignItems: "center",
-    gap: "6px",
+    gap: "4px",
     cursor: "pointer",
     transition: "0.2s",
   },
@@ -695,76 +692,84 @@ const styles = {
     border: "none",
     color: "#fca5a5",
     fontWeight: "700",
-    fontSize: "13px",
-    padding: "8px 16px",
-    borderRadius: "8px",
+    fontSize: "12px",
+    padding: "6px 12px",
+    borderRadius: "6px",
     display: "flex",
     alignItems: "center",
-    gap: "6px",
+    gap: "4px",
     cursor: "pointer",
     transition: "0.2s",
   },
-  container: { maxWidth: "1100px", margin: "0 auto", padding: "0 20px" },
+  container: { 
+    maxWidth: "1200px", 
+    margin: "0 auto", 
+    padding: "0 15px",
+    width: "100%",
+    boxSizing: "border-box"
+  },
   landingWrapper: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    padding: "50px 0",
-    animation: "slideIn 0.6s ease-out",
+    padding: "20px 0",
+    width: "100%",
   },
-  landingHeader: { textAlign: "center", marginBottom: "50px" },
+  landingHeader: { textAlign: "center", marginBottom: "30px", width: "100%" },
   logoLarge: {
-    height: "140px",
+    height: "100px",
     width: "auto",
-    marginBottom: "25px",
+    marginBottom: "15px",
     filter: "drop-shadow(0 0 15px rgba(59,130,246,0.3))",
   },
   landingUnivTitle: {
-    fontSize: "32px",
+    fontSize: "22px",
     fontWeight: "900",
-    letterSpacing: "2px",
+    letterSpacing: "1px",
     margin: "0 0 5px 0",
     color: "#fff",
   },
   landingDeptSub: {
-    fontSize: "15px",
+    fontSize: "12px",
     color: "#60a5fa",
     fontWeight: "600",
-    letterSpacing: "0.5px",
     margin: 0,
   },
   landingDivider: {
     height: "2px",
-    width: "100px",
+    width: "60px",
     background: "#3b82f6",
-    margin: "25px auto",
+    margin: "15px auto",
   },
   landingProjectTitle: {
-    fontSize: "28px",
+    fontSize: "20px",
     fontWeight: "800",
     color: "#fff",
     margin: "0 0 10px 0",
+    padding: "0 10px",
   },
   landingProjectDesc: {
     color: "#94a3b8",
-    fontSize: "15px",
-    maxWidth: "600px",
+    fontSize: "13px",
+    maxWidth: "500px",
     margin: "0 auto",
+    padding: "0 15px",
   },
   portalGrid: {
     display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: "30px",
+    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+    gap: "20px",
     width: "100%",
     maxWidth: "850px",
     marginTop: "10px",
+    boxSizing: "border-box",
   },
   portalCard: {
     background: "rgba(30, 41, 59, 0.6)",
     border: "1px solid rgba(255,255,255,0.08)",
-    borderRadius: "24px",
-    padding: "35px",
+    borderRadius: "20px",
+    padding: "25px",
     cursor: "pointer",
     transition: "all 0.3s ease",
     display: "flex",
@@ -774,8 +779,8 @@ const styles = {
   portalCardSecure: {
     background: "rgba(30, 41, 59, 0.6)",
     border: "1px solid rgba(239,68,68,0.15)",
-    borderRadius: "24px",
-    padding: "35px",
+    borderRadius: "20px",
+    padding: "25px",
     cursor: "pointer",
     transition: "all 0.3s ease",
     display: "flex",
@@ -784,79 +789,79 @@ const styles = {
   },
   portalIconWrapper: {
     background: "rgba(59,130,246,0.1)",
-    padding: "16px",
-    borderRadius: "16px",
-    marginBottom: "20px",
+    padding: "12px",
+    borderRadius: "12px",
+    marginBottom: "15px",
   },
   portalCardTitle: {
-    fontSize: "20px",
+    fontSize: "18px",
     fontWeight: "700",
     color: "#fff",
-    margin: "0 0 12px 0",
+    margin: "0 0 10px 0",
   },
   portalCardDesc: {
-    fontSize: "14px",
+    fontSize: "13px",
     color: "#94a3b8",
-    lineHeight: "1.6",
-    margin: "0 0 25px 0",
-    minHeight: "68px",
+    lineHeight: "1.5",
+    margin: "0 0 20px 0",
   },
   portalActionBtn: {
-    marginTop: "auto",
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "6px",
     color: "#60a5fa",
     fontWeight: "700",
-    fontSize: "14px",
+    fontSize: "13px",
+    marginTop: "auto",
   },
   portalActionBtnSecure: {
-    marginTop: "auto",
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "6px",
     color: "#f87171",
     fontWeight: "700",
-    fontSize: "14px",
+    fontSize: "13px",
+    marginTop: "auto",
   },
-  headerSection: { textAlign: "center", marginBottom: "40px" },
+  headerSection: { textAlign: "center", marginBottom: "30px", width: "100%" },
   aiBadge: {
     display: "inline-flex",
     alignItems: "center",
     gap: "5px",
     background: "#3b82f633",
     color: "#60a5fa",
-    padding: "4px 12px",
+    padding: "4px 10px",
     borderRadius: "20px",
-    fontSize: "10px",
+    fontSize: "9px",
     fontWeight: "bold",
     border: "1px solid #3b82f644",
   },
   mainTitle: {
-    fontSize: "36px",
-    margin: "15px 0 5px",
+    fontSize: "26px",
+    margin: "12px 0 5px",
     fontWeight: "800",
     color: "#fff",
   },
-  highlight: { color: "#3b82f6" },
-  subTitle: { color: "#94a3b8", fontSize: "15px", marginTop: "5px" },
+  subTitle: { color: "#94a3b8", fontSize: "13px", marginTop: "5px", padding: "0 10px" },
   glassCard: {
     background: "rgba(30, 41, 59, 0.7)",
     backdropFilter: "blur(10px)",
     border: "1px solid rgba(255,255,255,0.1)",
-    padding: "35px",
-    borderRadius: "24px",
-    boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
+    padding: "20px",
+    borderRadius: "20px",
+    width: "100%",
+    boxSizing: "border-box",
   },
   glassCardSecure: {
     background: "rgba(30, 41, 59, 0.7)",
     backdropFilter: "blur(10px)",
-    padding: "40px",
-    borderRadius: "24px",
+    padding: "25px",
+    borderRadius: "20px",
     border: "1px solid rgba(255,255,255,0.1)",
     maxWidth: "450px",
-    margin: "40px auto",
-    boxShadow: "0 20px 50px rgba(0,0,0,0.5)",
+    margin: "20px auto",
+    width: "100%",
+    boxSizing: "border-box",
   },
   adminTitle: {
     textAlign: "center",
@@ -866,35 +871,36 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     gap: "10px",
-    fontSize: "22px",
-    marginBottom: "25px",
+    fontSize: "18px",
+    marginBottom: "20px",
   },
   inputRow: {
     display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: "20px",
-    marginBottom: "25px",
+    gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
+    gap: "15px",
+    marginBottom: "20px",
   },
   label: {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
-    fontSize: "13px",
+    gap: "6px",
+    fontSize: "12px",
     fontWeight: "600",
     color: "#94a3b8",
-    marginBottom: "8px",
+    marginBottom: "6px",
   },
   input: {
     width: "100%",
     background: "#0f172a",
     border: "1px solid #334155",
-    padding: "14px",
-    borderRadius: "12px",
+    padding: "12px",
+    borderRadius: "10px",
     color: "#fff",
-    fontSize: "15px",
+    fontSize: "14px",
     outline: "none",
+    boxSizing: "border-box",
   },
-  customUpload: { position: "relative" },
+  customUpload: { position: "relative", width: "100%" },
   hiddenFile: {
     opacity: 0,
     width: "100%",
@@ -908,46 +914,54 @@ const styles = {
     display: "block",
     background: "#0f172a",
     border: "1px solid #334155",
-    padding: "14px",
-    borderRadius: "12px",
+    padding: "12px",
+    borderRadius: "10px",
     textAlign: "center",
     color: "#60a5fa",
-    fontSize: "14px",
+    fontSize: "13px",
     fontWeight: "600",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
   },
   btn: {
     width: "100%",
     background: "linear-gradient(135deg, #3b82f6, #2563eb)",
     color: "white",
-    padding: "16px",
+    padding: "14px",
     border: "none",
-    borderRadius: "12px",
+    borderRadius: "10px",
     fontWeight: "800",
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: "10px",
+    gap: "8px",
+    fontSize: "14px",
   },
   btnSecure: {
     width: "100%",
     background: "linear-gradient(135deg, #ef4444, #b91c1c)",
     color: "white",
-    padding: "16px",
+    padding: "14px",
     border: "none",
-    borderRadius: "12px",
+    borderRadius: "10px",
     fontWeight: "800",
     cursor: "pointer",
+    fontSize: "14px",
   },
   backBar: {
     display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
     justifyContent: "space-between",
     alignItems: "center",
     background: "#1e293b90",
-    padding: "12px 25px",
-    borderRadius: "14px",
-    marginBottom: "25px",
+    padding: "12px 15px",
+    borderRadius: "12px",
+    marginBottom: "20px",
     border: "1px solid #334155",
+    gap: "10px",
   },
   backBtn: {
     background: "transparent",
@@ -957,28 +971,31 @@ const styles = {
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
-    gap: "5px",
+    gap: "4px",
+    fontSize: "13px",
   },
   resultsGrid: {
     display: "grid",
-    gridTemplateColumns: "1fr 1.2fr",
-    gap: "25px",
+    gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))",
+    gap: "20px",
+    width: "100%",
   },
   visualizationCard: {
     background: "rgba(30, 41, 59, 0.5)",
     border: "1px solid #334155",
-    padding: "25px",
-    borderRadius: "20px",
+    padding: "20px",
+    borderRadius: "16px",
+    boxSizing: "border-box",
   },
   cardHeader: {
-    margin: "0 0 20px 0",
+    margin: "0 0 15px 0",
     display: "flex",
     alignItems: "center",
-    gap: "10px",
-    fontSize: "15px",
+    gap: "8px",
+    fontSize: "14px",
     fontWeight: "700",
     borderBottom: "1px solid #1e293b",
-    paddingBottom: "10px",
+    paddingBottom: "8px",
     color: "#fff",
   },
   scoreCircleWrapper: {
@@ -1006,7 +1023,7 @@ const styles = {
     width: "100%",
   },
   scoreValue: {
-    fontSize: "36px",
+    fontSize: "32px",
     margin: "0",
     fontWeight: "900",
     color: "#fff",
@@ -1017,101 +1034,113 @@ const styles = {
     fontWeight: "bold",
     letterSpacing: "0.5px",
   },
-  chartRow: { marginBottom: "20px" },
+  chartRow: { marginBottom: "15px" },
   chartMeta: {
     display: "flex",
     justifyContent: "space-between",
-    fontSize: "13px",
+    fontSize: "12px",
     color: "#cbd5e1",
-    marginBottom: "8px",
+    marginBottom: "6px",
   },
   barTrack: {
-    height: "10px",
+    height: "8px",
     background: "#0f172a",
-    borderRadius: "5px",
+    borderRadius: "4px",
     overflow: "hidden",
   },
   barFill: {
     height: "100%",
-    borderRadius: "5px",
+    borderRadius: "4px",
     transition: "width 2s cubic-bezier(0.4, 0, 0.2, 1)",
   },
-  matrixGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px" },
+  matrixGrid: { 
+    display: "grid", 
+    gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", 
+    gap: "10px" 
+  },
   matrixItem: {
     background: "#0f172a",
-    padding: "12px 15px",
-    borderRadius: "10px",
+    padding: "10px",
+    borderRadius: "8px",
     display: "flex",
     alignItems: "center",
-    gap: "8px",
-    fontSize: "13px",
+    gap: "6px",
+    fontSize: "12px",
     color: "#cbd5e1",
     border: "1px solid #1e293b",
   },
-  skillGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "25px" },
+  skillGrid: { 
+    display: "grid", 
+    gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))", 
+    gap: "20px",
+    width: "100%"
+  },
   skillCard: {
     background: "rgba(30, 41, 59, 0.5)",
     border: "1px solid #334155",
-    padding: "25px",
-    borderRadius: "20px",
+    padding: "20px",
+    borderRadius: "16px",
+    boxSizing: "border-box",
   },
-  pillContainer: { display: "flex", flexWrap: "wrap", gap: "8px" },
+  pillContainer: { display: "flex", flexWrap: "wrap", gap: "6px" },
   pillSuccess: {
     background: "#064e3b",
     color: "#34d399",
-    padding: "6px 14px",
-    borderRadius: "8px",
+    padding: "5px 10px",
+    borderRadius: "6px",
     fontSize: "11px",
     fontWeight: "bold",
   },
   pillWarning: {
     background: "#451a03",
     color: "#fbbf24",
-    padding: "6px 14px",
-    borderRadius: "8px",
+    padding: "5px 10px",
+    borderRadius: "6px",
     fontSize: "11px",
     fontWeight: "bold",
   },
   insightBox: {
-    padding: "20px",
+    padding: "15px",
     background: "rgba(59, 130, 246, 0.08)",
-    borderRadius: "16px",
+    borderRadius: "12px",
     borderLeft: "4px solid #3b82f6",
-    fontSize: "14px",
-    lineHeight: "1.6",
+    fontSize: "13px",
+    lineHeight: "1.5",
     color: "#cbd5e1",
   },
   tableHeaderRow: {
     display: "flex",
+    flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: "25px",
+    marginBottom: "20px",
     alignItems: "center",
     color: "#fff",
+    gap: "10px",
   },
   logoutBtn: {
     background: "rgba(239,68,68,0.15)",
     border: "1px solid #ef4444",
-    padding: "8px 16px",
-    borderRadius: "10px",
+    padding: "6px 12px",
+    borderRadius: "8px",
     color: "#fca5a5",
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
-    gap: "6px",
+    gap: "4px",
     fontWeight: "600",
-    fontSize: "13px",
+    fontSize: "12px",
   },
   table: {
     width: "100%",
     borderCollapse: "collapse",
     textAlign: "left",
-    fontSize: "15px",
+    fontSize: "13px",
   },
   domainBadge: {
     background: "#1e293b",
-    padding: "6px 12px",
-    borderRadius: "8px",
-    fontSize: "13px",
+    padding: "4px 8px",
+    borderRadius: "6px",
+    fontSize: "12px",
     color: "#60a5fa",
     border: "1px solid #334155",
     fontWeight: "600",
