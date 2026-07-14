@@ -23,7 +23,6 @@ public class AIService {
         String pythonUrl = aiEngineUrl + "/process-resume";
         RestTemplate rest = new RestTemplate();
 
-        // 1. Create temporary file
         File tempFile = File.createTempFile("upload_", "_" + file.getOriginalFilename());
 
         try (FileOutputStream fos = new FileOutputStream(tempFile)) {
@@ -31,18 +30,15 @@ public class AIService {
         }
 
         try {
-            // 2. Prepare the Request Body
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
             body.add("file", new FileSystemResource(tempFile));
             body.add("interest", interest);
 
-            // 3. Set Headers
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
             HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(body, headers);
 
-            // 4. Call Python Engine
             System.out.println("🚀 Sending request to Live Cloud Python AI Engine at: " + pythonUrl);
             String response = rest.postForObject(pythonUrl, entity, String.class);
             System.out.println("✅ Python Analysis Received!");
@@ -53,7 +49,6 @@ public class AIService {
             System.err.println("❌ Error communicating with Python: " + e.getMessage());
             throw e;
         } finally {
-            // 5. CLEANUP: Delete the temp file
             if (tempFile.exists()) {
                 Files.delete(tempFile.toPath());
                 System.out.println("🧹 Temp file deleted.");
