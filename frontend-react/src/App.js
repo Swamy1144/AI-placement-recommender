@@ -63,7 +63,7 @@ function App() {
       alert("⚠️ Selection Required: Please provide a Job Role and a Resume.");
       return;
     }
-    loading(true);
+    setLoading(true); // ✅ Fixed: Correctly triggers the spinning state machine loader
     setResult(null);
     const formData = new FormData();
     formData.append("file", file);
@@ -383,7 +383,7 @@ function App() {
                   <div style={styles.chartRow}>
                     <div style={styles.chartMeta}>
                       <span>Technical Skill Matching (70% Weight)</span>
-                      <strong>
+                      strong>
                         {animatedScore > 15 ? animatedScore - 5 : animatedScore}%
                       </strong>
                     </div>
