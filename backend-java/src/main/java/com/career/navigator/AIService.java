@@ -1,61 +1,54 @@
 package com.career.navigator;
 
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.*;
-import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.util.List;
 
-@Service
-public class AIService {
+@RestController
+@RequestMapping("/api/candidates")
+@CrossOrigin(origins = "*")
+public class CandidateController {
 
-    // Use a constant for the URL so it's easy to change later
-    private static final String PYTHON_URL = "http://127.0.0.1:5000/process-resume";
+    @Autowired
+    private CandidateRepository repository;
 
-    public String callPython(MultipartFile file, String interest) throws IOException {
-        RestTemplate rest = new RestTemplate();
+    @Autowired
+    private AIService aiService;
 
-        // 1. Create temporary file
-        File tempFile = File.createTempFile("upload_", "_" + file.getOriginalFilename());
+    @PostMapping("/register")
+    public Candidate registerCandidate(@RequestBody Candidate candidate) {
+        return repository.save(candidate);
+    }
 
-        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
-            fos.write(file.getBytes());
-        }
-
+    @PostMapping(value = "/analyze-resume", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> analyzeResume(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("interest") String interest) {
         try {
-            // 2. Prepare the Request Body
-            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-            body.add("file", new FileSystemResource(tempFile));
-            body.add("interest", interest);
-
-            // 3. Set Headers
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-            HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(body, headers);
-
-            // 4. Call Python Engine
-            System.out.println("🚀 Sending request to Python AI Engine...");
-            String response = rest.postForObject(PYTHON_URL, entity, String.class);
-            System.out.println("✅ Python Analysis Received!");
-
-            return response;
-
-        } catch (Exception e) {
-            System.err.println("❌ Error communicating with Python: " + e.getMessage());
-            throw e;
-        } finally {
-            // 5. CLEANUP: Delete the temp file so your computer stays clean
-            if (tempFile.exists()) {
-                Files.delete(tempFile.toPath());
-                System.out.println("🧹 Temp file deleted.");
+            if (file.isEmpty()) {
+                return ResponseEntity.badRequest().body("{\"error\": \"File is empty\"}");
             }
+
+            String result = aiService.callPython(file, interest);
+            return ResponseEntity.ok(result);
+
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"error\": \"Java File IO Error: " + e.getMessage() + "\"}");
+        } catch (Exception e) {
+            System.err.println("AI Bridge Error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"error\": \"AI Engine Connection Failed.\"}");
         }
+    }
+
+    @GetMapping("/all")
+    public List<Candidate> getAllCandidates() {
+        return repository.findAll();
     }
 }
