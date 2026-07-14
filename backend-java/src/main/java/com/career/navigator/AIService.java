@@ -23,7 +23,7 @@ public class AIService {
 
         // 1. Create temporary file
         File tempFile = File.createTempFile("upload_", "_" + file.getOriginalFilename());
-        
+
         try (FileOutputStream fos = new FileOutputStream(tempFile)) {
             fos.write(file.getBytes());
         }
@@ -44,7 +44,7 @@ public class AIService {
             System.out.println("🚀 Sending request to Python AI Engine...");
             String response = rest.postForObject(PYTHON_URL, entity, String.class);
             System.out.println("✅ Python Analysis Received!");
-            
+
             return response;
 
         } catch (Exception e) {
