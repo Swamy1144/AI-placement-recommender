@@ -17,3 +17,5 @@ EXPOSE 10000
 
 # Start the application using uvicorn directly
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "10000"]
+
+
